@@ -1,0 +1,25 @@
+<style>
+$(document).ready(function(){
+  if($('#shopify-section-product-template').length > 0){//if product page
+    localStorage.setItem('product-url', window.location.pathname);//set product url ot local storage
+  }else{
+    if($('#CustomerLoginForm').length){//shkip if login page
+    }else if($('#RegisterForm').length > 0){//if registration page
+      if(localStorage.getItem('product-url')){//if local storage has product url
+
+        // !!! paste (<input type="hidden" name="return_to" value="" />) to templates/customers/register.liquid file inside form
+        $('#RegisterForm [name="return_to"]').val(localStorage.getItem('product-url'));//set product url to return_to input 
+
+      }
+    }else if($('#g-recaptcha').length){//if captcha
+     if(localStorage.getItem('product-url')){
+      var $newInput = $('<input type="hidden" name="return_to" value="'+localStorage.getItem('product-url')+'" />');
+      $newInput.insertBefore($('.shopify-challenge__container input[type="submit"]'));
+    }
+
+  }else{
+   localStorage.removeItem('product-url');//else remove product url from local storage
+ }
+}
+});
+</style>
